@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Masculin & le Féminin — Deux principes au cœur du réel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300;1,8..60,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --white:      #F8F6F2;
+    --ink:        #1C1917;
+    --ink-soft:   #44403C;
+    --ink-muted:  #78716C;
+    --masc:       #1E3A5F;   /* deep navy   — principe masculin */
+    --masc-mid:   #2D5A8E;
+    --masc-pale:  #E8EEF5;
+    --fem:        #6B2737;   /* bordeaux profond — principe féminin */
+    --fem-mid:    #9B4456;
+    --fem-pale:   #F5EAECl;
+    --both:       #4A3728;   /* union — brun chaud */
+    --both-accent:#C4956A;
+    --both-pale:  #F5EDE4;
+    --line:       #DDD8D0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--white);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.9;
+    overflow-x: hidden;
+  }
+
+  /* ── PROGRESS ── */
+  #progress-bar {
+    position: fixed; top: 0; left: 0;
+    height: 2px; background: var(--both-accent);
+    width: 0%; z-index: 1000;
+    transition: width 0.1s linear;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 16px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(248,246,242,0.94);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px; font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+  }
+  .nav-links {
+    display: flex; gap: 28px; list-style: none;
+  }
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-muted); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--both-accent); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+  }
+
+  .hero-half {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 140px 60px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-half-masc {
+    background: var(--masc);
+  }
+
+  .hero-half-fem {
+    background: var(--fem);
+  }
+
+  .hero-half-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.4s forwards;
+  }
+  .hero-half-masc .hero-half-label { color: rgba(255,255,255,0.5); }
+  .hero-half-fem .hero-half-label  { color: rgba(255,255,255,0.5); }
+
+  .hero-half-word {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(56px, 6vw, 88px);
+    font-weight: 300;
+    line-height: 1.0;
+    color: #fff;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.7s forwards;
+  }
+
+  .hero-half-sub {
+    margin-top: 28px;
+    font-size: 15px;
+    color: rgba(255,255,255,0.65);
+    max-width: 34ch;
+    line-height: 1.8;
+    opacity: 0;
+    animation: fadeUp 1s ease 1s forwards;
+  }
+
+  .hero-divider {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: rgba(255,255,255,0.25);
+    z-index: 10;
+  }
+
+  .hero-ornament-m {
+    position: absolute;
+    bottom: -40px; right: -20px;
+    font-family: 'Playfair Display', serif;
+    font-size: 240px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.04);
+    line-height: 1;
+    user-select: none;
+  }
+
+  .hero-ornament-f {
+    position: absolute;
+    bottom: -40px; left: -10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 240px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.04);
+    line-height: 1;
+    user-select: none;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 48px; left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    opacity: 0;
+    animation: fadeIn 1s ease 2s forwards;
+  }
+  .hero-scroll span {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px; letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+  }
+  .scroll-line {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+    animation: pulse 2s ease infinite;
+  }
+
+  /* ── GENERIC ── */
+  .section-wrap {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 100px 60px;
+  }
+
+  .full-bleed { max-width: 100%; padding: 0; margin: 0; }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--both-accent);
+    margin-bottom: 28px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .section-label::before {
+    content: ''; display: block;
+    width: 28px; height: 1px;
+    background: var(--both-accent);
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 4.5vw, 58px);
+    font-weight: 300; line-height: 1.15;
+    margin-bottom: 36px;
+  }
+  .section-title em { font-style: italic; }
+  .txt-masc { color: var(--masc-mid); }
+  .txt-fem  { color: var(--fem-mid);  }
+  .txt-both { color: var(--both-accent); }
+
+  p {
+    color: var(--ink-soft);
+    margin-bottom: 22px;
+    max-width: 62ch;
+  }
+  p strong { color: var(--ink); font-weight: 700; }
+
+  .divider { width: 100%; height: 1px; background: var(--line); }
+
+  /* ── QUESTION BLOCK ── */
+  .q-block {
+    border-left: 3px solid var(--both-accent);
+    background: var(--both-pale);
+    padding: 28px 36px;
+    margin: 44px 0;
+    max-width: 60ch;
+    position: relative;
+  }
+  .q-block::before {
+    content: '?';
+    position: absolute; top: -14px; left: 28px;
+    font-family: 'Playfair Display', serif;
+    font-size: 26px; font-style: italic;
+    color: var(--both-accent);
+    background: var(--both-pale);
+    padding: 0 8px;
+  }
+  .q-block p {
+    color: var(--ink); font-style: italic;
+    margin: 0; font-size: 17px;
+  }
+  .q-block.masc {
+    border-color: var(--masc-mid);
+    background: var(--masc-pale);
+  }
+  .q-block.masc::before { color: var(--masc-mid); background: var(--masc-pale); }
+  .q-block.masc p { color: var(--masc); }
+
+  .q-block.fem {
+    border-color: var(--fem-mid);
+    background: #F5EAEC;
+  }
+  .q-block.fem::before { color: var(--fem-mid); background: #F5EAEC; }
+  .q-block.fem p { color: var(--fem); }
+
+  /* ── DUAL COLUMN ── */
+  .dual {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin: 44px 0;
+    background: var(--line);
+  }
+  .dual-col {
+    padding: 48px 40px;
+    background: var(--white);
+  }
+  .dual-col.masc { border-top: 3px solid var(--masc-mid); }
+  .dual-col.fem  { border-top: 3px solid var(--fem-mid); }
+
+  .dual-col-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .masc .dual-col-label { color: var(--masc-mid); }
+  .fem  .dual-col-label { color: var(--fem-mid); }
+
+  .dual-col-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px; font-weight: 400;
+    margin-bottom: 20px;
+    line-height: 1.2;
+  }
+  .masc .dual-col-title { color: var(--masc); }
+  .fem  .dual-col-title { color: var(--fem); }
+
+  .dual-col p {
+    font-size: 15px; margin-bottom: 14px; max-width: 100%;
+  }
+
+  .dual-col ul {
+    list-style: none; margin-top: 20px;
+  }
+  .dual-col ul li {
+    font-size: 14.5px; color: var(--ink-soft);
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    display: flex; gap: 10px; align-items: baseline;
+  }
+  .dual-col ul li::before {
+    content: '—';
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    flex-shrink: 0;
+  }
+  .masc ul li::before { color: var(--masc-mid); }
+  .fem  ul li::before { color: var(--fem-mid); }
+
+  /* ── WORLD TRADITIONS ── */
+  .traditions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px;
+    margin: 44px 0;
+    background: var(--line);
+  }
+  .tradition-card {
+    background: var(--white);
+    padding: 32px 24px;
+    transition: background 0.2s;
+  }
+  .tradition-card:hover { background: var(--both-pale); }
+  .tradition-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 12px;
+  }
+  .tradition-masc {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; color: var(--masc-mid);
+    margin-bottom: 6px;
+  }
+  .tradition-fem {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; font-style: italic;
+    color: var(--fem-mid);
+  }
+  .tradition-note {
+    margin-top: 12px;
+    font-size: 13px; color: var(--ink-muted);
+    line-height: 1.6;
+  }
+
+  /* ── DARK PANEL ── */
+  .dark-panel {
+    background: var(--ink);
+    padding: 80px 60px;
+    color: var(--white);
+  }
+  .dark-panel .section-label { color: var(--both-accent); }
+  .dark-panel .section-label::before { background: var(--both-accent); }
+  .dark-panel .section-title { color: var(--white); }
+  .dark-panel p { color: rgba(255,255,255,0.65); max-width: 62ch; }
+  .dark-panel p strong { color: var(--white); }
+  .dark-panel .q-block {
+    background: rgba(196,149,106,0.12);
+    border-color: var(--both-accent);
+  }
+  .dark-panel .q-block::before { background: var(--ink); }
+  .dark-panel .q-block p { color: rgba(255,255,255,0.85); }
+
+  /* ── CRISIS TIMELINE ── */
+  .crisis-list {
+    margin: 44px 0;
+    max-width: 62ch;
+  }
+  .crisis-item {
+    display: flex; gap: 28px; align-items: flex-start;
+    padding: 28px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .crisis-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; color: var(--both-accent);
+    flex-shrink: 0; padding-top: 4px;
+  }
+  .crisis-text { font-size: 15.5px; color: rgba(255,255,255,0.65); line-height: 1.8; }
+  .crisis-text strong { color: rgba(255,255,255,0.9); }
+
+  /* ── ACCORDION ── */
+  .accordion { margin: 44px 0; max-width: 62ch; }
+  .acc-item { border-bottom: 1px solid var(--line); }
+  .acc-trigger {
+    width: 100%; background: none; border: none;
+    padding: 22px 0;
+    display: flex; justify-content: space-between; align-items: center;
+    cursor: pointer; text-align: left;
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; color: var(--ink);
+    gap: 14px; transition: color 0.2s;
+  }
+  .acc-trigger:hover { color: var(--both-accent); }
+  .acc-icon {
+    font-size: 18px; transition: transform 0.3s;
+    flex-shrink: 0; color: var(--both-accent);
+  }
+  .acc-item.open .acc-icon { transform: rotate(45deg); }
+  .acc-content {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+  .acc-item.open .acc-content { max-height: 600px; }
+  .acc-body {
+    padding-bottom: 22px;
+    font-size: 15.5px; line-height: 1.85;
+    color: var(--ink-soft);
+  }
+
+  /* ── BIG QUOTE ── */
+  .big-quote {
+    padding: 88px 60px;
+    background: var(--both-pale);
+    text-align: center;
+  }
+  .big-quote blockquote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 3.5vw, 42px);
+    font-weight: 300; font-style: italic;
+    line-height: 1.5;
+    color: var(--both);
+    max-width: 26ch;
+    margin: 0 auto;
+  }
+  .big-quote cite {
+    display: block; margin-top: 28px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.18em;
+    color: var(--both-accent); font-style: normal;
+  }
+
+  /* ── UNION VISUAL ── */
+  .union-visual {
+    display: flex;
+    align-items: stretch;
+    gap: 2px;
+    margin: 44px 0;
+    background: var(--line);
+  }
+  .union-side {
+    flex: 1;
+    padding: 40px 32px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .union-side.masc { background: var(--masc); }
+  .union-side.fem  { background: var(--fem); }
+  .union-middle {
+    width: 200px;
+    background: var(--both);
+    padding: 40px 28px;
+    display: flex; flex-direction: column; justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .union-side-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px; letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 14px;
+  }
+  .union-side-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px; font-weight: 300;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 14px;
+  }
+  .union-side-items {
+    font-size: 13px;
+    color: rgba(255,255,255,0.55);
+    line-height: 2;
+  }
+  .union-middle-word {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px; font-style: italic;
+    color: var(--both-accent);
+    margin-bottom: 12px;
+  }
+  .union-middle-sub {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.7;
+  }
+
+  /* ── INITIATION CARDS ── */
+  .init-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2px;
+    margin: 44px 0;
+    background: var(--line);
+  }
+  .init-card {
+    background: var(--white);
+    padding: 36px 28px;
+    transition: background 0.2s;
+  }
+  .init-card:hover { background: var(--both-pale); }
+  .init-icon { font-size: 26px; margin-bottom: 14px; display: block; }
+  .init-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; margin-bottom: 10px; color: var(--ink);
+  }
+  .init-text { font-size: 14.5px; color: var(--ink-soft); line-height: 1.75; margin: 0; }
+  .init-loss {
+    margin-top: 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em;
+    color: var(--fem-mid);
+  }
+
+  /* ── WARM PANEL ── */
+  .warm-panel {
+    background: var(--both-pale);
+    padding: 80px 60px;
+  }
+  .warm-panel p { max-width: 62ch; }
+  .warm-panel .q-block { background: var(--white); }
+  .warm-panel .q-block::before { background: var(--white); }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 40px 60px;
+    border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.14em;
+    color: var(--ink-muted);
+  }
+
+  /* ── REVEAL ── */
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.75s ease, transform 0.75s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; } to { opacity: 1; }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; }
+    50%       { opacity: 1; }
+  }
+
+  /* ── BIBLE VERSE ── */
+  .verse-block {
+    margin: 36px 0;
+    padding: 36px 44px;
+    border-left: 3px solid var(--both-accent);
+    background: var(--both-pale);
+    max-width: 62ch;
+    position: relative;
+  }
+  .verse-block.dark {
+    background: rgba(196,149,106,0.10);
+    border-color: var(--both-accent);
+  }
+  .verse-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 19px;
+    font-style: italic;
+    line-height: 1.65;
+    color: var(--both);
+    margin: 0 0 14px 0;
+  }
+  .dark .verse-text { color: rgba(255,255,255,0.88); }
+  .verse-ref {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--both-accent);
+    text-transform: uppercase;
+    margin: 0;
+  }
+  .verse-opening {
+    position: absolute;
+    top: 14px; left: 14px;
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    line-height: 1;
+    color: var(--both-accent);
+    opacity: 0.25;
+  }
+
+  /* ── PORTRAIT CARDS (Jean-Baptiste / Marie) ── */
+  .portrait-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin: 44px 0;
+    background: var(--line);
+  }
+  .portrait-card {
+    padding: 48px 40px;
+    background: var(--white);
+    position: relative;
+    overflow: hidden;
+  }
+  .portrait-card.jb  { border-top: 4px solid var(--masc-mid); }
+  .portrait-card.mar { border-top: 4px solid var(--fem-mid); }
+  .portrait-bg-letter {
+    position: absolute;
+    bottom: -20px; right: -10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 180px;
+    font-weight: 700;
+    line-height: 1;
+    opacity: 0.04;
+    user-select: none;
+    color: var(--ink);
+  }
+  .portrait-principle {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .portrait-card.jb  .portrait-principle { color: var(--masc-mid); }
+  .portrait-card.mar .portrait-principle { color: var(--fem-mid); }
+  .portrait-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 34px;
+    font-weight: 400;
+    margin-bottom: 8px;
+    line-height: 1.1;
+  }
+  .portrait-card.jb  .portrait-name { color: var(--masc); }
+  .portrait-card.mar .portrait-name { color: var(--fem); }
+  .portrait-subtitle {
+    font-size: 14px;
+    font-style: italic;
+    color: var(--ink-muted);
+    margin-bottom: 28px;
+  }
+  .portrait-body { font-size: 15px; color: var(--ink-soft); line-height: 1.8; margin-bottom: 16px; max-width: 100%; }
+  .portrait-verse {
+    margin-top: 24px;
+    padding: 20px 24px;
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-style: italic;
+    line-height: 1.6;
+    border-left: 2px solid;
+  }
+  .portrait-card.jb  .portrait-verse { border-color: var(--masc-mid); color: var(--masc); background: var(--masc-pale); }
+  .portrait-card.mar .portrait-verse { border-color: var(--fem-mid);  color: var(--fem);  background: #F5EAEC; }
+  .portrait-verse-ref {
+    display: block;
+    margin-top: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-style: normal;
+  }
+  .portrait-card.jb  .portrait-verse-ref { color: var(--masc-mid); }
+  .portrait-card.mar .portrait-verse-ref { color: var(--fem-mid); }
+
+  /* ── CHRIST SYNTHESIS PANEL ── */
+  .christ-panel {
+    background: var(--ink);
+    padding: 0;
+  }
+  .christ-top {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .christ-col {
+    padding: 60px 44px;
+  }
+  .christ-col.left  { background: rgba(30,58,95,0.6);  border-right: 1px solid rgba(255,255,255,0.08); }
+  .christ-col.right { background: rgba(107,39,55,0.6); }
+  .christ-col-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px; letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 12px;
+  }
+  .christ-col-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-style: italic;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 20px;
+  }
+  .christ-col-item {
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.8;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex; gap: 10px;
+  }
+  .christ-col-item::before { content: '→'; color: var(--both-accent); flex-shrink: 0; }
+  .christ-center {
+    padding: 72px 60px;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .christ-center-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--both-accent);
+    margin-bottom: 28px;
+  }
+  .christ-center-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 4vw, 54px);
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1.15;
+    margin-bottom: 32px;
+  }
+  .christ-center-title em { font-style: italic; color: var(--both-accent); }
+  .christ-center-text {
+    font-size: 16px;
+    color: rgba(255,255,255,0.6);
+    max-width: 58ch;
+    margin: 0 auto 36px;
+    line-height: 1.9;
+  }
+  .christ-center-text strong { color: rgba(255,255,255,0.88); }
+  .christ-cross-attrs,
+  .cross-attrs {
+    display: flex;
+    justify-content: center;
+    gap: 2px;
+    margin: 44px 0;
+    background: rgba(255,255,255,0.06);
+  }
+  .cross-attr {
+    padding: 24px 28px;
+    text-align: center;
+    flex: 1;
+    border-right: 1px solid rgba(255,255,255,0.07);
+  }
+  .cross-attr:last-child { border-right: none; }
+  .cross-attr-emoji { font-size: 22px; display: block; margin-bottom: 8px; }
+  .cross-attr-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px; font-style: italic;
+    color: var(--both-accent);
+    margin-bottom: 6px;
+  }
+  .cross-attr-text {
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.6;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 820px) {
+    .portrait-grid { grid-template-columns: 1fr; }
+    .christ-top    { grid-template-columns: 1fr; }
+    .christ-center { padding: 48px 28px; }
+    .christ-col    { padding: 40px 28px; }
+    .cross-attr    { padding: 18px 14px; }
+
+    #hero { grid-template-columns: 1fr; }
+    .hero-half { padding: 100px 32px 60px; }
+    .hero-half-masc { min-height: 55vh; }
+    .hero-half-fem  { min-height: 55vh; }
+    .hero-divider { display: none; }
+    .hero-scroll { display: none; }
+    .dual, .union-visual { grid-template-columns: 1fr; display: block; }
+    .union-side, .union-middle { width: 100%; }
+    nav { padding: 14px 24px; }
+    .nav-links { display: none; }
+    .section-wrap { padding: 60px 28px; }
+    .dark-panel, .big-quote, .warm-panel { padding: 60px 28px; }
+    footer { flex-direction: column; gap: 10px; padding: 28px 24px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">Le Masculin & le Féminin</span>
+  <ul class="nav-links">
+    <li><a href="#principes">Principes</a></li>
+    <li><a href="#partout">Universel</a></li>
+    <li><a href="#union">L'union</a></li>
+    <li><a href="#crise">La crise</a></li>
+    <li><a href="#chemin">Le chemin</a></li>
+    <li><a href="#christ">Le Nouvel Adam</a></li>
+  </ul>
+</nav>
+
+<!-- HERO SPLIT -->
+<section id="hero">
+  <div class="hero-half hero-half-masc">
+    <div class="hero-half-label">Le principe</div>
+    <h1 class="hero-half-word">Masculin</h1>
+    <p class="hero-half-sub">Ce qui part vers le dehors, différencie, structure, ouvre un chemin dans l'inconnu.</p>
+    <div class="hero-ornament-m">♂</div>
+  </div>
+  <div class="hero-divider"></div>
+  <div class="hero-half hero-half-fem">
+    <div class="hero-half-label">Le principe</div>
+    <h1 class="hero-half-word" style="animation-delay:0.9s">Féminin</h1>
+    <p class="hero-half-sub" style="animation-delay:1.1s">Ce qui rassemble, intègre, donne forme au vivant, tient le centre.</p>
+    <div class="hero-ornament-f">♀</div>
+  </div>
+  <div class="hero-scroll">
+    <span>Descendre</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- INTRO -->
+<div class="section-wrap" id="principes">
+  <div class="section-label reveal">I — Avant toute polémique</div>
+  <h2 class="section-title reveal">Ce que tout le monde<br>ressent mais peine<br>à <em>nommer</em></h2>
+
+  <p class="reveal">Nous vivons une époque étrange. D'un côté, le masculin et le féminin semblent évidences mêmes, inscrits dans les corps, dans l'art, dans toutes les cultures de l'humanité. De l'autre, ces mots déclenchent des controverses immédiates. Parler de "masculin" ou de "féminin" semble, pour certains, renvoyer à des stéréotypes oppressifs. Pour d'autres, nier ces distinctions semble absurde.</p>
+
+  <p class="reveal">Ce site ne prend pas parti dans ce débat. Il propose quelque chose de plus fondamental : <strong>regarder ce que le masculin et le féminin sont vraiment</strong>, avant les caricatures des deux bords.</p>
+
+  <p class="reveal">Car ce qui est en jeu ici n'est pas d'abord politique ou social. C'est une question sur la structure profonde du réel — sur la façon dont la réalité elle-même est organisée. Et cette question touche chaque être humain, quelle que soit sa position dans le débat.</p>
+
+  <div class="q-block reveal">
+    <p>Quand vous pensez au mot "masculin", qu'est-ce qui vous vient en premier ? Et au mot "féminin" ? Maintenant demandez-vous : d'où viennent ces associations ?</p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- DEUX PRINCIPES -->
+<div class="section-wrap">
+  <div class="section-label reveal">II — Ce que ces mots désignent vraiment</div>
+  <h2 class="section-title reveal">Deux principes,<br>pas deux <em>cases</em></h2>
+
+  <p class="reveal">Le masculin et le féminin ne sont pas d'abord des listes de comportements imposés. Ils désignent deux dynamiques fondamentales que l'on retrouve à tous les niveaux du réel — bien au-delà des êtres humains.</p>
+
+  <p class="reveal">Regardez la nature. La graine qui perce le sol vers la lumière. La terre qui l'accueille, la nourrit, lui donne forme. La vague qui se brise. Le rivage qui la reçoit. Le soleil qui rayonne vers tout. La lune qui reçoit cette lumière et l'oriente vers la nuit.</p>
+
+  <p class="reveal">Ce ne sont pas des métaphores inventées. Ce sont des structures réelles, observables, que des millénaires d'humanité ont reconnues et nommées.</p>
+
+  <div class="dual reveal">
+    <div class="dual-col masc">
+      <div class="dual-col-label">Le principe masculin</div>
+      <div class="dual-col-title">Aller vers<br>le dehors</div>
+      <p>Ce qui part, différencie, trace une limite, ouvre un chemin. Ce qui nomme, structure, engage le chaos pour en faire de l'ordre.</p>
+      <ul>
+        <li>L'acte de partir en quête</li>
+        <li>Tracer une limite, définir</li>
+        <li>Affronter l'inconnu</li>
+        <li>Porter quelque chose au-dehors</li>
+        <li>La verticalité, l'ascension</li>
+        <li>La parole qui nomme</li>
+      </ul>
+    </div>
+    <div class="dual-col fem">
+      <div class="dual-col-label">Le principe féminin</div>
+      <div class="dual-col-title">Rassembler<br>au-dedans</div>
+      <p>Ce qui reçoit, intègre, nourrit, donne forme à la vie. Ce qui tient le centre, maintient la continuité, fait que les choses tiennent ensemble.</p>
+      <ul>
+        <li>L'acte de recevoir et transformer</li>
+        <li>Tenir le foyer, le centre</li>
+        <li>Nourrir ce qui est fragile</li>
+        <li>Intégrer les parties en un tout</li>
+        <li>L'horizontalité, la profondeur</li>
+        <li>La sagesse qui garde</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="reveal">Attention : ces principes ne définissent pas rigidement ce que doit être un homme ou une femme. Ils décrivent des dynamiques qui existent dans chaque être humain, à des dosages différents. Un homme porte du féminin. Une femme porte du masculin. C'est précisément leur tension intérieure qui les rend capables de créer, d'aimer, de penser.</p>
+
+  <div class="q-block reveal">
+    <p>Pensez à quelqu'un que vous admirez profondément — homme ou femme. Quelle proportion de ces deux dynamiques reconnaissez-vous en eux ? Qu'est-ce qui les rend entiers ?</p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- UNIVERSALITÉ -->
+<div class="section-wrap" id="partout">
+  <div class="section-label reveal">III — Partout, toujours</div>
+  <h2 class="section-title reveal">Toutes les civilisations<br>ont <em>reconnu</em> ces deux<br>principes</h2>
+
+  <p class="reveal">Si le masculin et le féminin n'étaient que des constructions culturelles arbitraires, on s'attendrait à les trouver distribuées au hasard dans les cultures du monde. Mais c'est précisément l'inverse. Chaque civilisation, sur chaque continent, à chaque époque, a reconnu et nommé ces deux dynamiques fondamentales.</p>
+
+  <div class="traditions-grid reveal">
+    <div class="tradition-card">
+      <div class="tradition-name">Chine ancienne</div>
+      <div class="tradition-masc">Yang</div>
+      <div class="tradition-fem">Yin</div>
+      <div class="tradition-note">Le yang : lumière, mouvement, chaleur. Le yin : ombre, réception, fraîcheur. Ni l'un ni l'autre n'est supérieur — ils se définissent l'un par l'autre.</div>
+    </div>
+    <div class="tradition-card">
+      <div class="tradition-name">Grèce antique</div>
+      <div class="tradition-masc">Apollon</div>
+      <div class="tradition-fem">Dionysos / Déméter</div>
+      <div class="tradition-note">L'ordre solaire, la clarté, la forme — contre la profondeur fertile, le flux vital, la terre nourricière.</div>
+    </div>
+    <div class="tradition-card">
+      <div class="tradition-name">Inde védique</div>
+      <div class="tradition-masc">Shiva / Purusha</div>
+      <div class="tradition-fem">Shakti / Prakriti</div>
+      <div class="tradition-note">La conscience pure et la nature active. Séparés, ils sont incomplets. Unis, ils créent le monde manifesté.</div>
+    </div>
+    <div class="tradition-card">
+      <div class="tradition-name">Égypte ancienne</div>
+      <div class="tradition-masc">Rê / Osiris</div>
+      <div class="tradition-fem">Isis / Nout</div>
+      <div class="tradition-note">Le soleil qui ordonne le cosmos — et la déesse du ciel qui l'englobe, le préserve, lui permet de renaître.</div>
+    </div>
+    <div class="tradition-card">
+      <div class="tradition-name">Christianisme</div>
+      <div class="tradition-masc">Le Logos / le Père</div>
+      <div class="tradition-fem">La Sagesse / Marie</div>
+      <div class="tradition-note">Le Verbe qui va vers le monde — et celle qui dit "oui", qui reçoit, porte, donne naissance à ce qui est nouveau.</div>
+    </div>
+    <div class="tradition-card">
+      <div class="tradition-name">Alchimie médiévale</div>
+      <div class="tradition-masc">Sol / Soufre</div>
+      <div class="tradition-fem">Luna / Mercure</div>
+      <div class="tradition-note">L'union des principes opposés dans le creuset — le "mariage sacré" comme image de toute création véritable.</div>
+    </div>
+  </div>
+
+  <p class="reveal">Cette convergence universelle n'est pas une coïncidence. Elle suggère que ces cultures n'ont pas <em>inventé</em> une dualité — elles ont <em>reconnu</em> quelque chose d'inscrit dans la structure du réel, quelque chose qui s'impose à l'observation honnête.</p>
+
+  <div class="q-block reveal">
+    <p>Si des cultures aussi différentes, sans contact les unes avec les autres, ont toutes distingué ces deux principes — qu'est-ce que cela dit de leur réalité ?</p>
+  </div>
+</div>
+
+<!-- BIG QUOTE -->
+<div class="big-quote">
+  <blockquote>
+    "La création elle-même nous dit quelque chose : rien ne naît d'un seul principe. Tout ce qui existe est le fruit d'une <em>rencontre</em>."
+  </blockquote>
+  <cite>— Sur la structure de la fécondité</cite>
+</div>
+
+<!-- L'UNION -->
+<div class="section-wrap" id="union">
+  <div class="section-label reveal">IV — Ce qui naît de leur rencontre</div>
+  <h2 class="section-title reveal">Seule l'union<br><em>crée</em></h2>
+
+  <p class="reveal">Voici une observation que l'on peut faire à tous les niveaux du réel : rien ne naît d'un seul principe. La création — au sens large — exige toujours la rencontre de deux dynamiques complémentaires.</p>
+
+  <p class="reveal">Un sol seul ne produit rien. Une graine seule non plus. L'eau et la terre. Le froid et le chaud. La nuit et le jour. La tension et la résolution. Le silence et le son. La question et la réponse. Ce mouvement de deux vers un — sans que les deux disparaissent — est le patron universel de toute fécondité.</p>
+
+  <div class="union-visual reveal">
+    <div class="union-side masc">
+      <div class="union-side-label">Le masculin apporte</div>
+      <div class="union-side-title">Direction<br>Forme<br>Limite</div>
+      <div class="union-side-items">
+        Ce qui distingue<br>
+        Ce qui nomme<br>
+        Ce qui engage<br>
+        Ce qui structure
+      </div>
+    </div>
+    <div class="union-middle">
+      <div class="union-middle-word">Vie</div>
+      <div class="union-middle-sub">Ce qui naît de leur<br>rencontre dépasse<br>chacun d'eux</div>
+    </div>
+    <div class="union-side fem">
+      <div class="union-side-label">Le féminin apporte</div>
+      <div class="union-side-title">Profondeur<br>Matière<br>Lien</div>
+      <div class="union-side-items">
+        Ce qui intègre<br>
+        Ce qui nourrit<br>
+        Ce qui reçoit<br>
+        Ce qui maintient
+      </div>
+    </div>
+  </div>
+
+  <p class="reveal">C'est visible dans la biologie, bien sûr — mais aussi dans la pensée, dans l'art, dans la construction sociale. Le meilleur architecte réunit la rigueur géométrique et la sensibilité à l'habitant. Le grand roman tient ensemble la structure narrative et la chaleur des personnages. La sagesse politique allie la décision ferme et l'écoute profonde.</p>
+
+  <p class="reveal"><strong>Ce qui manque à un principe seul :</strong> le masculin sans féminin devient violence ou abstraction froide. Le féminin sans masculin devient dissolution ou indifférenciation. L'un sans l'autre s'effondre.</p>
+
+  <div class="q-block reveal">
+    <p>Pensez à une création qui vous a marqué — une œuvre, une relation, une réalisation. Pouvez-vous y reconnaître la présence des deux principes à l'œuvre ensemble ?</p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- LA CRISE -->
+<div class="dark-panel" id="crise">
+  <div class="section-wrap" style="padding-top:0; padding-bottom:0;">
+    <div class="section-label reveal">V — Ce qui se passe aujourd'hui</div>
+    <h2 class="section-title reveal">La crise d'identité :<br>un symptôme<br>d'une rupture <em>plus profonde</em></h2>
+
+    <p class="reveal">Nous vivons quelque chose d'inédit dans l'histoire humaine. Pour la première fois, une civilisation remet en question non seulement les rôles sociaux — ce qui a toujours existé — mais les principes eux-mêmes. Non plus "comment doit-on être un homme dans notre société ?" mais "le masculin existe-t-il ?"</p>
+
+    <p class="reveal">Ce n'est pas un détail. C'est une rupture de fond. Et comme toute rupture de fond, elle produit des symptômes visibles — une confusion, une douleur, une désorientation que beaucoup ressentent sans pouvoir nommer.</p>
+
+    <div class="crisis-list reveal">
+      <div class="crisis-item">
+        <div class="crisis-num">01</div>
+        <div class="crisis-text"><strong>La dévirilisation sans remplacement.</strong> En rejetant les caricatures toxiques du masculin — ce qui était juste et nécessaire — nous n'avons pas proposé de vision positive de ce que signifie être un homme. Résultat : des millions de jeunes hommes sans boussole, qui cherchent leurs modèles dans les endroits les plus dangereux.</div>
+      </div>
+      <div class="crisis-item">
+        <div class="crisis-num">02</div>
+        <div class="crisis-text"><strong>La disparition des rites de passage.</strong> Toutes les cultures ont eu des rituels par lesquels un garçon devenait un homme — un moment de rupture, d'épreuve, de reconnaissance. Ces rituels n'existent presque plus. Le passage de l'enfance à l'âge adulte est devenu flou, indéterminé, sans marqueur.</div>
+      </div>
+      <div class="crisis-item">
+        <div class="crisis-num">03</div>
+        <div class="crisis-text"><strong>L'identité comme projet de soi.</strong> Quand les repères extérieurs s'effondrent, l'identité devient un travail entièrement personnel. "Qui suis-je ?" cesse d'être une question à laquelle la communauté, la tradition, et le réel répondent — et devient un fardeau individuel, souvent insoutenable.</div>
+      </div>
+      <div class="crisis-item">
+        <div class="crisis-num">04</div>
+        <div class="crisis-text"><strong>La confusion entre le principe et le stéréotype.</strong> Nous avons confondu la critique des stéréotypes réducteurs — légitime — avec la négation des principes eux-mêmes. Comme si, pour libérer les individus des cases, il fallait prétendre que les cases n'avaient jamais correspondu à rien de réel.</div>
+      </div>
+      <div class="crisis-item">
+        <div class="crisis-num">05</div>
+        <div class="crisis-text"><strong>Le vide laissé par les pères.</strong> Des études convergent : la présence ou l'absence d'un père façonne profondément la relation qu'un enfant a à l'autorité, à la limite, à l'aventure. Des générations entières ont grandi sans cette présence — et cherchent ce qu'elle donnait dans des substituts souvent inadequats.</div>
+      </div>
+    </div>
+
+    <div class="q-block reveal">
+      <p>Avez-vous eu un moment dans votre vie où vous saviez clairement ce que signifiait être un homme ou une femme — pas dans un sens contraignant, mais dans un sens qui vous donnait de la force ? Qu'est-ce qui vous l'avait transmis ?</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- LES JEUNES HOMMES -->
+<div class="section-wrap">
+  <div class="section-label reveal">VI — Un regard particulier</div>
+  <h2 class="section-title reveal">Ce que les jeunes hommes<br>cherchent sans trouver<br>de <em>nom</em></h2>
+
+  <p class="reveal">Il existe aujourd'hui une détresse masculine rarement nommée. Non pas parce que les hommes souffrent plus que les femmes — ce n'est pas la question — mais parce que leur souffrance spécifique est souvent invisible aux yeux d'une culture qui a du mal à en parler.</p>
+
+  <p class="reveal">Partout dans le monde, des millions de jeunes hommes trouvent dans des figures numériques — des "gourous" de la masculinité, des leaders de communautés en ligne — une réponse à une question que personne ne leur avait posée. Qu'est-ce que c'est qu'être un homme ?</p>
+
+  <p class="reveal">Le succès de ces figures n'est pas un mystère. Il n'est pas dû à leur sagesse — souvent superficielle — mais au <em>fait qu'ils répondent à une vraie question</em>. Une question que les institutions éducatives, les médias mainstream, et souvent les familles elles-mêmes ne savent plus comment aborder.</p>
+
+  <div class="init-grid reveal">
+    <div class="init-card">
+      <span class="init-icon">🏔️</span>
+      <div class="init-title">L'épreuve</div>
+      <p class="init-text">Toute initiation masculine traditionnelle comportait une épreuve — quelque chose à traverser, à vaincre, à endurer. Non pour la souffrance elle-même, mais pour la révélation : je suis capable de plus que ce que je croyais.</p>
+      <div class="init-loss">Ce qui manque aujourd'hui : un contexte qui donne sens à l'effort</div>
+    </div>
+    <div class="init-card">
+      <span class="init-icon">👴</span>
+      <div class="init-title">La transmission</div>
+      <p class="init-text">Les anciens transmettaient aux jeunes hommes un savoir sur ce qu'ils allaient devenir. Ce savoir n'était pas seulement technique — il était ontologique. "Voilà ce que tu es. Voilà ce que cela engage."</p>
+      <div class="init-loss">Ce qui manque aujourd'hui : des hommes formés qui transmettent à ceux qui commencent</div>
+    </div>
+    <div class="init-card">
+      <span class="init-icon">🤝</span>
+      <div class="init-title">La reconnaissance</div>
+      <p class="init-text">L'initiation se terminait par un acte de reconnaissance communautaire : "Tu n'es plus un enfant. Tu es l'un de nous." Ce moment public changeait le statut, l'identité, la façon dont les autres voyaient le jeune.</p>
+      <div class="init-loss">Ce qui manque aujourd'hui : un moment de passage clair, reconnu par tous</div>
+    </div>
+    <div class="init-card">
+      <span class="init-icon">🎯</span>
+      <div class="init-title">La mission</div>
+      <p class="init-text">Un homme initié recevait une place dans l'ordre du monde — un rôle, une responsabilité, quelque chose qui lui revenait de porter. Non comme une prison, mais comme une dignité.</p>
+      <div class="init-loss">Ce qui manque aujourd'hui : le sens d'avoir quelque chose d'important à accomplir</div>
+    </div>
+  </div>
+
+  <div class="q-block reveal masc">
+    <p>Si vous êtes un homme : y a-t-il eu un moment où vous avez su que vous étiez passé de l'enfance à l'âge adulte ? Quelqu'un vous l'a-t-il dit explicitement ?</p>
+  </div>
+
+  <div class="q-block reveal fem" style="margin-top: 24px;">
+    <p>Si vous êtes une femme : avez-vous eu des hommes dans votre entourage qui semblaient perdus, comme si personne ne leur avait jamais dit ce qu'on attendait d'eux — non comme contrainte, mais comme invitation ?</p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- LE FÉMININ BLESSÉ -->
+<div class="warm-panel">
+  <div class="section-wrap" style="padding-top:0; padding-bottom:0;">
+    <div class="section-label reveal">VII — L'autre côté</div>
+    <h2 class="section-title reveal">Le féminin n'est pas<br>une faiblesse à <em>surmonter</em></h2>
+
+    <p class="reveal">La confusion ne touche pas seulement les hommes. Elle touche aussi profondément les femmes — mais différemment.</p>
+
+    <p class="reveal">Nous vivons dans une culture qui a longtemps méprisé ce qui est proprement féminin : la réception, le soin, la continuité, l'intériorité, la relation. Ces qualités ont été présentées comme des signes de faiblesse, comme des obstacles à l'émancipation — comme si la libération des femmes consistait à devenir plus masculines.</p>
+
+    <p class="reveal">C'est une erreur profonde. Et beaucoup de femmes la ressentent — tiraillées entre un modèle de "réussite" calqué sur l'idéal masculin de la performance et de l'ascension, et des aspirations profondes qui ne rentrent pas dans ce cadre.</p>
+
+    <div class="accordion reveal">
+      <div class="acc-item">
+        <button class="acc-trigger">
+          Le care n'est pas inférieur à la production
+          <span class="acc-icon">+</span>
+        </button>
+        <div class="acc-content">
+          <div class="acc-body">
+            Prendre soin d'un enfant, d'un malade, d'une communauté est l'une des activités les plus exigeantes, les plus complexes, les plus importantes qui existent. Le fait que ces activités aient longtemps été peu rémunérées et peu valorisées socialement dit quelque chose sur notre société — pas sur leur valeur intrinsèque. Une culture saine reconnaît que tenir le centre est aussi vital que d'aller en périphérie.
+          </div>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger">
+          La réception n'est pas passivité
+          <span class="acc-icon">+</span>
+        </button>
+        <div class="acc-content">
+          <div class="acc-body">
+            Recevoir vraiment quelque chose — une personne, une idée, une souffrance — est un acte actif, exigeant, transformateur. La terre qui reçoit la graine ne fait pas "rien". Elle transforme. Elle donne forme. Sans elle, la graine ne devient rien. Le féminin comme principe de réception n'est pas un manque — c'est une puissance propre, irremplaçable.
+          </div>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger">
+          Avoir des enfants n'est pas un "renoncement"
+          <span class="acc-icon">+</span>
+        </button>
+        <div class="acc-content">
+          <div class="acc-body">
+            Nous avons laissé se répandre une idée bizarre : que la vie orientée vers la génération, le soin, la transmission serait une forme de défaite face à la vie orientée vers la carrière et la réalisation individuelle. Comme si donner la vie était moins important que de produire. La génération d'humains qui naissent, la transmission de ce qui vaut la peine d'être transmis — c'est l'acte le plus fondamentalement créateur qui existe.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-block reveal">
+      <p>Y a-t-il des aspects de vous que vous avez longtemps minimisés parce qu'ils semblaient "moins importants" selon les critères dominants de notre époque ? Qu'est-ce que ce serait de les revendiquer pleinement ?</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- LA VOIE DE SORTIE -->
+<div class="section-wrap" id="chemin">
+  <div class="section-label reveal">VIII — Vers une sortie</div>
+  <h2 class="section-title reveal">Ce n'est pas un retour<br>en arrière — c'est une<br><em>intégration</em></h2>
+
+  <p class="reveal">La réponse à la crise actuelle ne peut pas être un simple "retour aux traditions" — comme si les injustices et les rigidités du passé n'avaient pas existé. Mais elle ne peut pas non plus être la table rase — comme si l'humanité entière s'était trompée depuis l'origine en reconnaissant ces principes.</p>
+
+  <p class="reveal">Ce dont nous avons besoin, c'est d'une <strong>intégration plus haute</strong> — qui prend au sérieux à la fois les aspirations à la liberté individuelle et la réalité des principes qui structurent la vie humaine.</p>
+
+  <div class="accordion reveal">
+    <div class="acc-item">
+      <button class="acc-trigger">
+        Distinguer le principe de la caricature
+        <span class="acc-icon">+</span>
+      </button>
+      <div class="acc-content">
+        <div class="acc-body">
+          Le masculin n'est pas la brutalité. Le féminin n'est pas la passivité. Ces caricatures ont existé — et fait du mal. Mais la solution n'est pas de nier les principes : c'est de les <em>purifier</em>. Un masculin qui ne se réduit pas à la domination mais qui va vers le dehors pour servir quelque chose de plus grand que lui. Un féminin qui ne se réduit pas à la soumission mais qui tient, intègre, et donne forme à la vie.
+        </div>
+      </div>
+    </div>
+    <div class="acc-item">
+      <button class="acc-trigger">
+        Redonner du sens à l'effort masculin
+        <span class="acc-icon">+</span>
+      </button>
+      <div class="acc-content">
+        <div class="acc-body">
+          Les jeunes hommes qui trouvent des "gourous" toxiques en ligne ne cherchent pas la domination — ils cherchent un sens à leur énergie. Ils cherchent quelqu'un qui leur dise : "Ce que tu es capable de porter est important. Ta force a une destination digne d'elle." La question n'est pas de canaliser cette énergie vers la soumission ou vers la violence — c'est de lui donner une direction juste.
+        </div>
+      </div>
+    </div>
+    <div class="acc-item">
+      <button class="acc-trigger">
+        Réhabiliter le féminin comme puissance
+        <span class="acc-icon">+</span>
+      </button>
+      <div class="acc-content">
+        <div class="acc-body">
+          Une culture saine ne demande pas aux femmes de choisir entre "réussir comme un homme" et "se sacrifier comme l'époque précédente". Elle reconnaît que les qualités proprement féminines — le soin, la relation, la transmission, l'intégration — sont des puissances créatrices de premier plan, et les célèbre comme telles.
+        </div>
+      </div>
+    </div>
+    <div class="acc-item">
+      <button class="acc-trigger">
+        Comprendre la souffrance des personnes qui ne se reconnaissent pas dans cette dualité
+        <span class="acc-icon">+</span>
+      </button>
+      <div class="acc-content">
+        <div class="acc-body">
+          Parler de ces principes n'est pas une injonction. Les êtres humains sont infiniment divers dans leur façon de vivre le masculin et le féminin en eux. Certains les vivent dans une tension particulièrement intense. Cette tension mérite d'être prise au sérieux — avec compassion, non avec mépris ni avec une négation du réel. La carte n'est pas le territoire : reconnaître des principes ne nie pas la complexité des individus.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- LE NOUVEL ADAM — SECTION CHRIST -->
+<div class="section-wrap" id="christ">
+  <div class="section-label reveal">IX — Le sommet de tout</div>
+  <h2 class="section-title reveal">Le Nouvel Adam :<br>là où les deux principes<br>trouvent leur <em>plénitude</em></h2>
+
+  <p class="reveal">Nous avons suivi un chemin. Le masculin et le féminin comme principes réels, présents dans toutes les cultures, nécessaires l'un à l'autre, blessés par la chute, attendant une guérison. La tradition chrétienne propose quelque chose de renversant pour répondre à tout cela : <strong>non pas une règle morale, mais une personne.</strong></p>
+
+  <p class="reveal">Adam, dans le récit de la Genèse, nomme les animaux — il exerce un principe masculin de nomination et de structuration. Ève est tirée du côté d'Adam — elle porte en elle quelque chose qui manquait à l'homme seul, un principe de réception, de relation, de vie intérieure. Ensemble ils formaient une image de la plénitude humaine. La chute les sépare — de Dieu, l'un de l'autre, d'eux-mêmes.</p>
+
+  <p class="reveal">Le Nouvel Adam ne vient pas simplement <em>réparer</em> Adam. Il vient récapituler et porter à leur perfection les deux principes — en une seule personne, dans une seule vie, sur une seule croix.</p>
+
+  <div class="verse-block reveal">
+    <div class="verse-opening">"</div>
+    <p class="verse-text">Le premier homme, Adam, est devenu un être vivant. Le dernier Adam est devenu un esprit qui donne la vie.</p>
+    <p class="verse-ref">1 Corinthiens 15.45 — Segond 21</p>
+  </div>
+
+  <p class="reveal">Ce verset est un pivot. Le premier Adam reçoit la vie — il est fait de terre et animé par le souffle de Dieu. Le dernier Adam <em>donne</em> la vie. Il n'est plus seulement le récepteur du don de Dieu — il est lui-même source. Le mouvement s'est inversé et accompli en même temps.</p>
+</div>
+
+<!-- LES DEUX TÉMOINS : PORTRAITS -->
+<div style="max-width:1040px; margin:0 auto; padding: 0 60px 80px;">
+  <div class="section-label reveal" style="margin-bottom:36px;">Les deux ministères — deux figures qui préparent et accompagnent</div>
+
+  <p class="reveal" style="max-width:62ch; color:var(--ink-soft); margin-bottom:44px;">Avant même que le Christ entre dans son ministère public, deux figures le précèdent ou l'accompagnent — chacune incarnant l'un des deux principes dans leur forme la plus pure, orientés vers lui.</p>
+
+  <div class="portrait-grid reveal">
+
+    <!-- JEAN-BAPTISTE -->
+    <div class="portrait-card jb">
+      <div class="portrait-bg-letter">JB</div>
+      <div class="portrait-principle">Le ministère masculin</div>
+      <div class="portrait-name">Jean-Baptiste</div>
+      <div class="portrait-subtitle">La voix qui va en avant, qui trace le chemin</div>
+
+      <p class="portrait-body">Jean-Baptiste est l'image du masculin dans sa forme la plus radicale et la plus juste. Il quitte tout — la ville, le confort, la reconnaissance sociale — pour aller dans le désert. C'est le mouvement premier du masculin : partir vers l'extérieur, affronter l'inhospitalier, y trouver quelque chose de vrai.</p>
+
+      <p class="portrait-body">Sa mission est d'annoncer quelqu'un d'autre. Le masculin sain ne se sert pas lui-même — il pointe au-delà de lui-même. Jean ne construit pas un empire personnel. Il prépare un chemin pour un autre.</p>
+
+      <div class="portrait-verse">
+        "Il dit : Je suis la voix de celui qui crie dans le désert : Rendez droits les chemins du Seigneur, comme l'a dit Ésaïe le prophète."
+        <span class="portrait-verse-ref">Jean 1.23 — Segond 21</span>
+      </div>
+
+      <p class="portrait-body" style="margin-top:20px;">Mais la révélation la plus profonde de Jean est dans ces quelques mots, prononcés quand ses propres disciples commencent à suivre Jésus. Il n'est pas jaloux. Il n'est pas blessé. Il dit simplement, avec une sérénité absolue :</p>
+
+      <div class="portrait-verse">
+        "Il faut qu'il grandisse et que je diminue."
+        <span class="portrait-verse-ref">Jean 3.30 — Segond 21</span>
+      </div>
+
+      <p class="portrait-body" style="margin-top:16px;">C'est le masculin à son sommet : non pas la domination, mais le service. Non pas la conquête pour soi, mais l'effacement pour que quelque chose de plus grand puisse advenir. Un homme qui sait reconnaître ce qui est plus grand que lui — et qui s'en réjouit.</p>
+    </div>
+
+    <!-- MARIE -->
+    <div class="portrait-card mar">
+      <div class="portrait-bg-letter">M</div>
+      <div class="portrait-principle">Le ministère féminin</div>
+      <div class="portrait-name">Marie</div>
+      <div class="portrait-subtitle">Celle qui reçoit, porte et demeure</div>
+
+      <p class="portrait-body">Marie est l'image du féminin dans sa forme la plus haute et la plus libre. Quand l'ange lui annonce qu'elle portera le Fils de Dieu, elle ne comprend pas tout. Elle pose une question honnête. Et puis elle dit oui — un oui total, sans garantie, sans contrat.</p>
+
+      <p class="portrait-body">Ce "oui" — le <em>Fiat</em> de la tradition latine — est l'acte féminin par excellence : recevoir quelque chose d'immense dans l'espace intérieur de sa propre existence, et lui donner chair, corps, présence dans le monde.</p>
+
+      <div class="portrait-verse">
+        "Marie dit alors : Je suis la servante du Seigneur. Que tout se passe pour moi comme tu l'as dit. Et l'ange la quitta."
+        <span class="portrait-verse-ref">Luc 1.38 — Segond 21</span>
+      </div>
+
+      <p class="portrait-body" style="margin-top:20px;">Mais Marie n'est pas seulement la mère de l'enfance du Christ. Elle est présente là où tous les autres ont fui — au pied de la croix. Le féminin tient le centre quand tout s'effondre. Il reste. Il porte la douleur sans se détourner. C'est la fidélité qui demeure quand l'heure est la plus sombre.</p>
+
+      <div class="portrait-verse">
+        "Près de la croix de Jésus se tenaient sa mère, la sœur de sa mère, Marie femme de Clopas, et Marie de Magdala."
+        <span class="portrait-verse-ref">Jean 19.25 — Segond 21</span>
+      </div>
+
+      <p class="portrait-body" style="margin-top:16px;">Et au Cénacle, à la Pentecôte, c'est encore elle qui est là — au centre de la communauté naissante, tenant ensemble les disciples dispersés par la peur. Le féminin comme principe de rassemblement et de continuité, jusqu'au bout.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CHRIST : LA SYNTHÈSE -->
+<div class="christ-panel">
+
+  <div class="christ-top">
+    <div class="christ-col left">
+      <div class="christ-col-label">Dans ses actes — le masculin</div>
+      <div class="christ-col-title">Il va. Il nomme. Il trace.</div>
+      <div class="christ-col-item">Il va dans le désert quarante jours</div>
+      <div class="christ-col-item">Il renverse les tables du Temple</div>
+      <div class="christ-col-item">Il dit "Je suis le chemin"</div>
+      <div class="christ-col-item">Il appelle et envoie ses disciples</div>
+      <div class="christ-col-item">Il affronte les scribes et les pharisiens</div>
+      <div class="christ-col-item">Il va librement à la croix</div>
+    </div>
+    <div class="christ-col right">
+      <div class="christ-col-label">Dans ses actes — le féminin</div>
+      <div class="christ-col-title">Il pleure. Il nourrit. Il demeure.</div>
+      <div class="christ-col-item">Il pleure devant le tombeau de Lazare</div>
+      <div class="christ-col-item">Il nourrit les foules — "je suis le pain de vie"</div>
+      <div class="christ-col-item">Il lave les pieds de ses disciples</div>
+      <div class="christ-col-item">Il accueille les enfants, les malades, les exclus</div>
+      <div class="christ-col-item">Il prie longuement, en silence, seul</div>
+      <div class="christ-col-item">Il porte les péchés du monde — réceptivité totale</div>
+    </div>
+  </div>
+
+  <div class="christ-center">
+    <div class="christ-center-label">La synthèse — IX — Le Nouvel Adam</div>
+    <h3 class="christ-center-title">En lui, les deux principes<br>ne s'annulent pas :<br>ils s'<em>accomplissent</em></h3>
+
+    <p class="christ-center-text">La croix est l'image la plus frappante de cette synthèse. C'est à la fois <strong>l'acte masculin le plus radical qui soit</strong> — aller jusqu'au bout, sans reculer, affronter la mort — et <strong>l'acte féminin le plus total qui soit</strong> — recevoir en soi toute la violence, toute la souffrance, tout le péché, sans se fermer, sans se défendre, en laissant tout traverser.</p>
+
+    <p class="christ-center-text">En Adam, les deux principes sont séparés, puis blessés par la chute. En Christ, ils trouvent leur unité — non pas par fusion qui efface la différence, mais par l'amour qui les porte tous les deux à leur perfection.</p>
+
+    <div class="verse-block dark reveal" style="margin: 0 auto 44px; max-width: 58ch; text-align:left;">
+      <div class="verse-opening">"</div>
+      <p class="verse-text">Il n'y a plus ni Juif ni Grec, il n'y a plus ni esclave ni libre, il n'y a plus ni homme ni femme ; car vous êtes tous un en Jésus-Christ.</p>
+      <p class="verse-ref">Galates 3.28 — Segond 21</p>
+    </div>
+
+    <p class="christ-center-text">Ce verset n'efface pas les différences — il les intègre dans quelque chose de plus grand. Être "un en Christ" n'est pas devenir identiques, c'est trouver en lui le point où toutes les polarités trouvent leur sens et leur harmonie.</p>
+
+    <div class="cross-attrs">
+      <div class="cross-attr">
+        <span class="cross-attr-emoji">🌿</span>
+        <div class="cross-attr-title">Le Nouvel Adam</div>
+        <div class="cross-attr-text">Récapitule ce qu'Adam et Ève portaient séparément, dans une unité sans confusion</div>
+      </div>
+      <div class="cross-attr">
+        <span class="cross-attr-emoji">🔥</span>
+        <div class="cross-attr-title">Le Logos incarné</div>
+        <div class="cross-attr-text">Le principe structurant de toute réalité descend dans la chair — le masculin cosmique s'incarne</div>
+      </div>
+      <div class="cross-attr">
+        <span class="cross-attr-emoji">🌾</span>
+        <div class="cross-attr-title">Le Pain de vie</div>
+        <div class="cross-attr-text">Il se donne à manger, à intégrer, à porter en soi — le féminin cosmique s'accomplit</div>
+      </div>
+      <div class="cross-attr">
+        <span class="cross-attr-emoji">✝️</span>
+        <div class="cross-attr-title">La Croix</div>
+        <div class="cross-attr-text">Acte masculin total et acte féminin total simultanément : donner et recevoir en même temps</div>
+      </div>
+    </div>
+
+    <div class="verse-block dark reveal" style="margin: 0 auto; max-width: 60ch; text-align:left;">
+      <div class="verse-opening">"</div>
+      <p class="verse-text">Et la Parole a été faite chair, et elle a habité parmi nous, pleine de grâce et de vérité ; et nous avons contemplé sa gloire, une gloire comme la gloire du Fils unique venu du Père.</p>
+      <p class="verse-ref">Jean 1.14 — Segond 21</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="divider"></div>
+
+<!-- FINALE -->
+<div class="dark-panel">
+  <div class="section-wrap" style="padding-top:0; padding-bottom:0;">
+    <div class="section-label reveal">Pour finir</div>
+    <h2 class="section-title reveal">La vraie question :<br>vers quoi <em>orientez-vous</em><br>votre être ?</h2>
+
+    <p class="reveal">Au fond, la crise du masculin et du féminin est un symptôme d'une crise plus large : la perte d'un centre. Quand une civilisation n'a plus d'accord sur ce qui est au-dessus d'elle — sur ce vers quoi elle oriente son énergie — ses principes fondamentaux commencent à flotter.</p>
+
+    <p class="reveal">Un homme sait qui il est quand il sait vers quoi il va. Une femme sait qui elle est quand elle sait ce qu'elle porte et nourrit. Dans les deux cas, <strong>l'identité naît de l'orientation</strong> — pas de l'introspection seule.</p>
+
+    <p class="reveal">La question n'est pas : "Suis-je assez masculin ?" ou "Suis-je assez féminine ?" La question est : <strong>vers quoi est-ce que j'oriente la puissance qui est en moi ?</strong> Est-ce que je la dépense ou est-ce que je la donne ? Est-ce que je la retiens ou est-ce que je l'offre ?</p>
+
+    <div class="q-block reveal">
+      <p>Si votre façon d'être — dans ce que vous avez de plus profondément masculin ou féminin — était pleinement orientée vers quelque chose de grand, de vrai, de digne de vous : à quoi ressemblerait votre vie ?</p>
+    </div>
+
+    <p class="reveal" style="margin-top: 36px;">Les traditions qui ont duré — qui ont traversé les siècles et nourri des civilisations entières — avaient en commun de placer cette question au centre. Non pour écraser les individus, mais pour les libérer d'eux-mêmes. Pour leur dire : tu es plus que ton anxiété, plus que ta confusion, plus que tes blessures. Tu portes quelque chose. Maintenant, vis à la hauteur de ce que tu portes.</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-text">Le Masculin & le Féminin — Une méditation philosophique</span>
+  <span class="footer-text">Pour chercheurs honnêtes de toute conviction</span>
+</footer>
+
+<script>
+// ── PROGRESS ──
+window.addEventListener('scroll', () => {
+  const p = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+  document.getElementById('progress-bar').style.width = p + '%';
+});
+
+// ── REVEAL ──
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// ── ACCORDION ──
+document.querySelectorAll('.acc-trigger').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.acc-item');
+    const open = item.classList.contains('open');
+    document.querySelectorAll('.acc-item.open').forEach(el => el.classList.remove('open'));
+    if (!open) item.classList.add('open');
+  });
+});
+</script>
+</body>
+</html>
